@@ -1,0 +1,69 @@
+.surveyBox {
+  .controlBox {
+    position: fixed;
+    right: 0.5rem;
+    .panelBox {
+      margin-bottom: 1rem;
+    }
+    .typeBox {
+      margin-bottom: 1rem;
+    }
+    .title {
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .button {
+      margin-bottom: 1rem;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  .topBox {
+    padding: 1rem;
+    padding-top: 2rem;
+    .remark {
+      text-align: right;
+      opacity: 0.8;
+    }
+    .title {
+      padding-top: 2rem;
+      text-align: center;
+      font-size: 1.6rem;
+    }
+    .details {
+      padding-top: 3rem;
+      text-align: justify;
+    }
+  }
+  .inputBox {
+    position: relative;
+  }
+  .line {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    span {
+      height: 30px;
+      line-height: 30px;
+      padding-left: 49px;
+    }
+    span::after {
+      position: absolute;
+      content: '';
+      width: 100px;
+      height: 1px;
+      background-color: #000;
+      bottom: 0;
+    }
+  }
+  .textInput {
+    position: relative;
+    z-index: 1;
+  }
+  .textInput:focus {
+    background: #fff;
+  }
+}

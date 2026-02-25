@@ -1,0 +1,251 @@
+.ant-pro-layout-content {
+  padding: 0 !important;
+}
+
+.ant-layout-content {
+  min-height: calc(100vh - 91px) !important;
+}
+
+.ant-pro .ant-layout-header.ant-pro-layout-header {
+  background-color: #091223e0 !important;
+}
+
+.ant-layout-sider-light,
+.ant-page-header {
+  background-color: #fff !important;
+}
+
+.ant-pro .ant-pro-layout .ant-pro-layout-bg-list {
+  background: #f0f2f5 !important;
+}
+
+.ant-pro-global-header-logo h1 {
+  color: #fff !important;
+}
+
+.ant-pro-layout .ant-pro-base-menu.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: #4b6bf322 !important;
+}
+
+/* drag  */
+.DraggableTags-tag {
+  width: 100%;
+}
+
+.dragquestionList .ant-input-group-addon {
+  background: rgba(0, 0, 0, 0);
+  border: 0;
+  font-weight: 600;
+}
+
+.dragquestionList .ant-input-group-addon,
+.dragquestionList .ant-input-group-wrap,
+.dragquestionList .ant-input-group>.ant-input {
+  border: 0;
+}
+
+.ant_radio_inner {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-color: #304095;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.ant_checkbox_inner {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-color: #304095;
+  border-style: solid;
+  border-width: 1px;
+  transition: all 0.3s;
+}
+
+.dragquestionList {
+  border: 0;
+  margin-bottom: 0.5rem;
+  color: #24378f;
+  border-radius: 3px;
+  /* -webkit-transition: all 0.5s cubic-bezier(0.465, -0.005, 0.155, 1) 0s;
+    -o-transition: all 0.5s cubic-bezier(0.465, -0.005, 0.155, 1) 0s;
+    transition: all 0.5s cubic-bezier(0.465, -0.005, 0.155, 1) 0s; */
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0);
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-slect: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+
+.dragquestionList:hover {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.dragquestionList .type {
+  margin-bottom: 1rem;
+}
+
+.dragquestionList .title {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dragquestionList .titleinput .ant-input {
+  font-weight: 600;
+}
+
+.dragquestionList .answersList {
+  border: 1px dashed #4b6af300;
+  background-color: #dbe1fd00;
+  margin-bottom: 0.3rem;
+  padding: 2px 0;
+}
+
+.dragquestionList .answersList .ant-input {
+  background-color: #dbe1fd00;
+}
+
+.dragquestionList .answersList .ant-input:hover {
+  box-shadow: 0 0 0 2px rgb(75 107 243 / 20%);
+}
+
+.answersList .deleteIcon {
+  visibility: hidden;
+  cursor: pointer;
+}
+
+.answersList:hover .deleteIcon {
+  visibility: visible;
+}
+
+.dragquestionList .titleinput .ant-input:hover {
+  /* border-color: #7895ff; */
+  box-shadow: 0 0 0 2px rgb(75 107 243 / 20%);
+  /* border-right-width: 1px;
+  outline: 0; */
+}
+
+.surveyContain {
+  min-height: calc(100vh - 164px);
+}
+
+/* --------login box----------- */
+.cardBox .ant-form-item-control-input-content {
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.cardBox .ant-form-item-control-input-content .ant-input-affix-wrapper-lg {
+  background: rgba(255, 255, 255, 0.3);
+  /* -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px); */
+  border: none;
+  padding: 0.6rem 1rem;
+}
+
+.cardBox .ant-input-affix-wrapper>input.ant-input {
+  background: rgba(255, 255, 255, 0);
+  padding-left: 5px;
+  color: #fff;
+  font-weight: normal;
+}
+
+.cardBox .ant-input-lg::-webkit-input-placeholder {
+  color: #fff;
+}
+
+.cardBox .ant-input-affix-wrapper>input.ant-input::-webkit-input-placeholder {
+  color: #fff;
+}
+
+.cardBox .ant-input-prefix {
+  color: #fff;
+}
+
+.cardBox .ant-form-item-has-error :not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
+.ant-form-item-has-error :not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+.ant-form-item-has-error :not(.ant-input-disabled):not(.ant-input-borderless).ant-input:hover,
+.ant-form-item-has-error :not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.cardBox .ant-form-item-has-error :not(.ant-input-disabled):not(.ant-input-borderless).ant-input {
+  background: rgba(255, 255, 255, 0);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-transition-delay: 99999999s;
+  -webkit-transition: color 99999999s ease-out,
+    background-color 99999999s ease-out;
+}
+
+/* details  */
+.detailsBox .ant-collapse>.ant-collapse-item>.ant-collapse-header {
+  border-bottom: 1px solid #f0f2f5;
+  font-weight: 600;
+}
+
+.detailsBox .ant-form-item-label>label {
+  font-weight: 600;
+}
+
+.plot canvas {
+  cursor: pointer !important;
+}
+
+.consentform .ant-input-disabled {
+  color: rgba(36, 55, 143, 0.7) !important;
+}
+
+.resultShow .ant-result-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.resultShow .ant-result-icon>.anticon {
+  font-size: 4rem;
+}
+
+.ant-pro-layout-content {
+  margin: 0 !important;
+}
+
+@media (min-width: 576px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 992px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1200px) {
+  html {
+    font-size: 16px;
+  }
+}
