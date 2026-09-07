@@ -20,6 +20,8 @@ class _QuestionnaireState extends State<QuestionnaireScreen> {
   final GlobalKey _stepperKey = GlobalKey();
   QuestionData qd = QuestionData();
 
+  bool _loading = true;
+  bool _loadFailed = false;
   int _currentStep = 0;
   List<Step> steps = [];
   List<GlobalKey<QuestionState>> questionKeys = [];
@@ -32,15 +34,30 @@ class _QuestionnaireState extends State<QuestionnaireScreen> {
     });
   }
 
-  void initQuestionnaires() async {
-    qd.setContext(context);
-    await qd.fetchQuestionnaires();
-    questionKeys = List.generate(
-        qd.questionnaires.length, (index) => GlobalKey<QuestionState>());
-
+  Future<void> initQuestionnaires() async {
+    if (!mounted) return;
     setState(() {
-      steps = _buildSteps(qd.questionnaires);
+      _loading = true;
+      _loadFailed = false;
     });
+    qd.setContext(context);
+    try {
+      await qd.fetchQuestionnaires();
+      if (!mounted) return;
+      questionKeys = List.generate(
+          qd.questionnaires.length, (index) => GlobalKey<QuestionState>());
+      setState(() {
+        _currentStep = 0;
+        steps = _buildSteps(qd.questionnaires);
+        _loading = false;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+        _loadFailed = true;
+      });
+    }
   }
 
   List<Step> _buildSteps(List<dynamic> questionnaires) {
@@ -80,12 +97,13 @@ class _QuestionnaireState extends State<QuestionnaireScreen> {
       // Call your HTTP request function here to send the formattedAnswers to the server.
       try {
         await answerQuestion(qd.purposeId, json.encode(formattedAnswers), true);
-        // ignore: use_build_context_synchronously
+        if (!mounted) return;
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const SuccessPage()),
             (_) => false);
       } catch (e) {
+        if (!mounted) return;
         showToast(context, e.toString().replaceFirst('Exception: ', ''));
       }
     }
@@ -110,7 +128,9 @@ class _QuestionnaireState extends State<QuestionnaireScreen> {
             ),
           ),
         ),
-        floatingActionButton: qd.purposeId != qd.firstMeetingId &&
+        floatingActionButton: !_loading &&
+                !_loadFailed &&
+                qd.purposeId != qd.firstMeetingId &&
                 qd.questionnaires.isNotEmpty &&
                 qd.questionnaires[_currentStep]["skip"] == 1
             ? FloatingActionButton(
@@ -130,7 +150,7 @@ class _QuestionnaireState extends State<QuestionnaireScreen> {
               ),
             ),
           ),
-          child: steps.isEmpty
+          child: _loading
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   // ignore: prefer_const_literals_to_create_immutables
@@ -138,83 +158,100 @@ class _QuestionnaireState extends State<QuestionnaireScreen> {
                     const Center(child: CircularProgressIndicator()),
                   ],
                 )
-              : Stepper(
-                  key: _stepperKey,
-                  steps: steps,
-                  currentStep: _currentStep,
-                  onStepTapped: (int step) {},
-                  onStepContinue: () async {
-                    GlobalKey<QuestionState> currentQuestionKey =
-                        questionKeys[_currentStep];
-                    if (!currentQuestionKey.currentState!
-                        .allQuestionsAnswered()) {
-                      showToast(context, S.of(context).all_question);
-
-                      GlobalKey? firstUnansweredQuestionKey = currentQuestionKey
-                          .currentState!
-                          .findFirstUnansweredQuestion();
-                      if (firstUnansweredQuestionKey != null) {
-                        // Add a delay before scrolling to ensure the GlobalKey has a non-null context.
-                        await Future.delayed(const Duration(milliseconds: 100));
-                        if (firstUnansweredQuestionKey.currentContext != null) {
-                          Scrollable.ensureVisible(
-                            firstUnansweredQuestionKey.currentContext!,
-                            alignment: 0.2,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                          );
-                        }
-                      }
-                      return;
-                    }
-                    _toNext();
-                  },
-                  onStepCancel: () {
-                    if (_currentStep > 0) {
-                      setState(() {
-                        _currentStep -= 1;
-                        steps = _buildSteps(qd.questionnaires);
-                      });
-                    }
-                  },
-                  controlsBuilder:
-                      (BuildContext context, ControlsDetails details) {
-                    return Row(
-                      children: <Widget>[
+              : _loadFailed || steps.isEmpty
+                  ? Center(
+                      child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(mainAxisSize: MainAxisSize.min, children: [
+                        Text(
+                            _loadFailed
+                                ? 'We could not load your questionnaires. Please try again.'
+                                : 'No questionnaires are linked to this visit yet. Please contact the clinic.',
+                            textAlign: TextAlign.center),
                         TextButton(
-                          onPressed: details.onStepCancel,
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 18),
-                            foregroundColor: Colors.black54, // 修改按钮文本颜色
-                          ),
-                          child: Text(S.of(context).prev),
-                        ),
-                        const SizedBox(width: 8.0), // 为按钮添加间距
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff0147a6),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 18),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                            onPressed: initQuestionnaires,
+                            child: const Text('Retry')),
+                      ]),
+                    ))
+                  : Stepper(
+                      key: _stepperKey,
+                      steps: steps,
+                      currentStep: _currentStep,
+                      onStepTapped: (int step) {},
+                      onStepContinue: () async {
+                        GlobalKey<QuestionState> currentQuestionKey =
+                            questionKeys[_currentStep];
+                        if (!currentQuestionKey.currentState!
+                            .allQuestionsAnswered()) {
+                          showToast(context, S.of(context).all_question);
+
+                          GlobalKey? firstUnansweredQuestionKey =
+                              currentQuestionKey.currentState!
+                                  .findFirstUnansweredQuestion();
+                          if (firstUnansweredQuestionKey != null) {
+                            // Add a delay before scrolling to ensure the GlobalKey has a non-null context.
+                            await Future.delayed(
+                                const Duration(milliseconds: 100));
+                            if (firstUnansweredQuestionKey.currentContext !=
+                                null) {
+                              Scrollable.ensureVisible(
+                                firstUnansweredQuestionKey.currentContext!,
+                                alignment: 0.2,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeInOut,
+                              );
+                            }
+                          }
+                          return;
+                        }
+                        _toNext();
+                      },
+                      onStepCancel: () {
+                        if (_currentStep > 0) {
+                          setState(() {
+                            _currentStep -= 1;
+                            steps = _buildSteps(qd.questionnaires);
+                          });
+                        }
+                      },
+                      controlsBuilder:
+                          (BuildContext context, ControlsDetails details) {
+                        return Row(
+                          children: <Widget>[
+                            TextButton(
+                              onPressed: details.onStepCancel,
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 18),
+                                foregroundColor: Colors.black54, // 修改按钮文本颜色
+                              ),
+                              child: Text(S.of(context).prev),
                             ),
-                          ),
-                          onPressed: details.onStepContinue,
-                          child: Text(
-                            _currentStep == steps.length - 1
-                                ? S.of(context).send_details
-                                : S.of(context).next,
-                            style: const TextStyle(
-                              color: Colors.white,
+                            const SizedBox(width: 8.0), // 为按钮添加间距
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xff0147a6),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 18),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                              ),
+                              onPressed: details.onStepContinue,
+                              child: Text(
+                                _currentStep == steps.length - 1
+                                    ? S.of(context).send_details
+                                    : S.of(context).next,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                          ],
+                        );
+                      },
+                    ),
         ));
   }
 
@@ -229,7 +266,7 @@ class _QuestionnaireState extends State<QuestionnaireScreen> {
 
       // Get the answers for the parent questionnaire
       Map<int, dynamic> answers =
-          key.currentState != null ? key.currentState!.answers : {};
+          key.currentState != null ? key.currentState!.visibleAnswers : {};
 
       Map<String, dynamic> allAnswers = {};
       for (var answer in answers.entries) {

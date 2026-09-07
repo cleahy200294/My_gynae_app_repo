@@ -1,0 +1,419 @@
+{
+  "name": "Prolapse Quality of Life (P-QOL)",
+  "version": "4",
+  "source": "P-QOL.pdf",
+  "language": "en",
+  "screening_question": "Do you usually have a bulge or something falling out that you can see or feel in the vaginal area?",
+  "trigger_answer": "Yes",
+  "sections": [
+    {
+      "name": "General health",
+      "details": "A prolapse is a bulge coming down from the vagina causing discomfort. Please fill in this questionnaire even if you feel you do not have a prolapse.",
+      "questions": [
+        {
+          "question": "How would you describe your health at present?",
+          "options": [
+            "Very good",
+            "Good",
+            "Fair",
+            "Poor",
+            "Very poor"
+          ]
+        },
+        {
+          "question": "How much do you think your prolapse affects your life?",
+          "options": [
+            "Not at all",
+            "Moderately",
+            "A little",
+            "A lot"
+          ]
+        },
+        {
+          "question": "How often do you open your bowels?",
+          "options": [
+            "More than once a day",
+            "Once a day",
+            "Once every two days",
+            "Once every three days",
+            "Once a week or more"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Symptoms",
+      "details": "Please write down if you have any of the following symptoms and mark how much these affect you.",
+      "questions": [
+        {
+          "question": "Going to the toilet to pass urine very often",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Urgency: a strong desire to pass urine",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Urge incontinence: urinary leakage associated with a strong desire to pass urine",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Stress incontinence: urinary leakage associated with coughing",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Feeling a bulge/lump from or in the vagina",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Heaviness or dragging feeling as the day goes on from the vagina/lower abdomen",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Vaginal bulge interfering with you emptying your bowels",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Discomfort in the vagina which is worse when standing and relieved by lying down",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Poor urinary stream",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Straining to empty your bladder",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Urine dribbles after emptying your bladder",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Bowels do not feel completely empty after opening",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Constipation: difficulty in opening",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Straining to open your bowels",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Vaginal bulge which gets in the way of sex",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Lower backache worsens with vaginal discomfort",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Do you help empty your bowels with your fingers",
+          "options": [
+            "Not applicable",
+            "None",
+            "A little",
+            "Moderately",
+            "A lot"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ROLE LIMITATIONS",
+      "details": "Below are some daily activities that can be affected by your prolapse problem. How much does your prolapse problem affect you? We would like you to answer every question. Simply tick the circle that applies to you.",
+      "questions": [
+        {
+          "question": "To what extent does your prolapse affect your household tasks? (e.g. cleaning, shopping, etc.)",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Does your prolapse affect your job or your normal daily activities outside the home?",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PHYSICAL/SOCIAL LIMITATIONS",
+      "details": "",
+      "questions": [
+        {
+          "question": "Does your prolapse affect your physical activities (e.g. going for a walk, run, sport, gym, etc.)",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Does your prolapse affect your ability to travel?",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Does your prolapse limit your social life?",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Does your prolapse limit your ability to see/visit friends?",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PERSONAL LIMITATIONS",
+      "details": "",
+      "questions": [
+        {
+          "question": "Does your prolapse affect your relationship with your partner?",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Does your prolapse affect your sex life?",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Does your prolapse affect your family life?",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EMOTIONS",
+      "details": "",
+      "questions": [
+        {
+          "question": "Does your prolapse make you feel depressed?",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Does your prolapse make you feel anxious or nervous?",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Does your prolapse make you feel bad about yourself?",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SLEEP/ENERGY",
+      "details": "",
+      "questions": [
+        {
+          "question": "Does your prolapse affect your sleep?",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        },
+        {
+          "question": "Do you feel worn-out/tired?",
+          "options": [
+            "Not at all",
+            "Slightly",
+            "Moderately",
+            "A lot"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Do you do any of the following to help your prolapse problem?",
+      "details": "Answer every question even if you do not feel you have a prolapse problem. If so how much?",
+      "questions": [
+        {
+          "question": "Use tampons/pads/firm knickers to help?",
+          "options": [
+            "Never",
+            "Sometimes",
+            "Often",
+            "All the time"
+          ]
+        },
+        {
+          "question": "Do you push up the prolapse?",
+          "options": [
+            "Never",
+            "Sometimes",
+            "Often",
+            "All the time"
+          ]
+        },
+        {
+          "question": "Pain or discomfort due to the prolapse?",
+          "options": [
+            "Never",
+            "Sometimes",
+            "Often",
+            "All the time"
+          ]
+        },
+        {
+          "question": "Does the prolapse prevent you from standing?",
+          "options": [
+            "Never",
+            "Sometimes",
+            "Often",
+            "All the time"
+          ]
+        }
+      ]
+    }
+  ]
+}

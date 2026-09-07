@@ -28,6 +28,17 @@ class QuestionState extends State<Question> {
 
   Map<int, dynamic> answers = {};
 
+  Map<int, dynamic> get visibleAnswers {
+    final allQuestions = questions +
+        childrenQuestionnaires.expand((child) => child['questions']).toList();
+    return {
+      for (final question in allQuestions)
+        if (_shouldDisplayQuestion(question) &&
+            answers.containsKey(question['ID']))
+          question['ID'] as int: answers[question['ID']],
+    };
+  }
+
   GlobalKey? findFirstUnansweredQuestion() {
     List<dynamic> allQuestions = questions +
         childrenQuestionnaires.expand((c) => c['questions']).toList();
@@ -210,7 +221,10 @@ class QuestionState extends State<Question> {
           }
           return questionWidget;
         })
-          ..addAll(childrenQuestionnaires.map((childQuestionnaire) {
+          ..addAll(childrenQuestionnaires
+              .where((child) => (child['questions'] as List)
+                  .any((question) => _shouldDisplayQuestion(question)))
+              .map((childQuestionnaire) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -225,6 +239,11 @@ class QuestionState extends State<Question> {
                     ),
                   ),
                 ),
+                if ((childQuestionnaire['details'] as String? ?? '').isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Text(childQuestionnaire['details']),
+                  ),
                 ...List<Widget>.generate(childQuestionnaire['questions'].length,
                     (index) {
                   Widget questionWidget = _buildQuestion(

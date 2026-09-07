@@ -6,8 +6,6 @@ import 'package:prolapse_doctor_mobile/api/meeting.dart';
 import 'package:prolapse_doctor_mobile/question_data.dart';
 import 'package:prolapse_doctor_mobile/src/privacy_screen/privacy.dart';
 import 'package:prolapse_doctor_mobile/src/start_screen/start.dart';
-import 'package:prolapse_doctor_mobile/utils/util.dart';
-import 'package:prolapse_doctor_mobile/widgets/home/doctor_box.dart';
 import 'package:prolapse_doctor_mobile/widgets/home/header_widget.dart';
 import 'package:prolapse_doctor_mobile/widgets/home/purpose_box.dart';
 import 'package:prolapse_doctor_mobile/widgets/home/specialities_box.dart';
@@ -16,56 +14,54 @@ import '../../generated/l10n.dart';
 
 class HomeScreen extends StatefulWidget {
   final int userStatus;
-  const HomeScreen({Key? key, required this.userStatus}) : super(key: key);
+  final Future<List<dynamic>> Function(String) loadMeetings;
+  const HomeScreen(
+      {super.key,
+      required this.userStatus,
+      this.loadMeetings = getMeetingList});
 
   @override
   State<HomeScreen> createState() => _HomeState();
 }
 
 class _HomeState extends State<HomeScreen> {
-  List<dynamic> items = [];
-  late int userStatus;
+  List<dynamic> _meetings = [];
+  bool _loading = true;
+  bool _loadFailed = false;
+
+  // Filter at render time: the profile can arrive after the meeting request.
+  List<dynamic> get items => _meetings
+      .where((meeting) => widget.userStatus == 0
+          ? meeting['type'] == 1
+          : widget.userStatus == 1 && meeting['type'] != 1)
+      .toList();
 
   @override
   void initState() {
     super.initState();
-    userStatus = widget.userStatus;
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      var locale = Localizations.localeOf(context).languageCode;
-      _fetchMeetingData(locale);
+      if (mounted) _fetchMeetingData();
     });
   }
 
-  @override
-  void didUpdateWidget(HomeScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.userStatus != oldWidget.userStatus) {
-      setState(() {
-        userStatus = widget.userStatus;
-      });
-    }
-  }
-
-  void _fetchMeetingData(locale) async {
+  Future<void> _fetchMeetingData() async {
+    setState(() {
+      _loading = true;
+      _loadFailed = false;
+    });
     try {
-      List<dynamic> result = await getMeetingList(locale);
-      List<dynamic> result1 = [];
-      for (var element in result) {
-        if (element["type"] == 1) {
-          QuestionData qd = QuestionData();
-          qd.firstMeetingId = element["ID"];
-          if (userStatus == 0) {
-            result1.add(element);
-          }
-        } else if (userStatus == 1) {
-          result1.add(element);
-        }
-      }
+      final result = await widget
+          .loadMeetings(Localizations.localeOf(context).languageCode);
+      if (!mounted) return;
+      final firstMeetings = result.where((meeting) => meeting['type'] == 1);
+      QuestionData().firstMeetingId =
+          firstMeetings.isEmpty ? 0 : firstMeetings.first['ID'];
       setState(() {
-        items = result1;
+        _meetings = result;
+        _loading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       if (e.toString().replaceFirst('Exception: ', '') == '401') {
         Navigator.pushAndRemoveUntil(
             context,
@@ -73,8 +69,43 @@ class _HomeState extends State<HomeScreen> {
             (_) => false);
         return;
       }
-      showToast(context, e.toString().replaceFirst('Exception: ', ''));
+      setState(() {
+        _loading = false;
+        _loadFailed = true;
+      });
     }
+  }
+
+  Widget _questionnaireAccess() {
+    if (_loading) {
+      return const Padding(
+        padding: EdgeInsets.all(24),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+    if (!_loadFailed && items.isNotEmpty) return PurposeBox(items: items);
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(children: [
+        Text(S.of(context).questionnaire,
+            style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff0147a6))),
+        const SizedBox(height: 12),
+        Text(
+            _loadFailed
+                ? 'We could not load your questionnaires. Please try again.'
+                : 'No questionnaires are available for your visit yet. '
+                    'Please contact the clinic to arrange them.',
+            textAlign: TextAlign.center),
+        TextButton.icon(
+          onPressed: _fetchMeetingData,
+          icon: const Icon(Icons.refresh),
+          label: const Text('Retry'),
+        ),
+      ]),
+    );
   }
 
   @override
@@ -114,7 +145,7 @@ class _HomeState extends State<HomeScreen> {
             ],
           ),
         ),
-        PurposeBox(items: items),
+        _questionnaireAccess(),
         const SpecialitiesBox(),
         Padding(
           padding: const EdgeInsets.all(16.0),

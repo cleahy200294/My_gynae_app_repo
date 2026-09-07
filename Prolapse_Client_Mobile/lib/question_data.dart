@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:prolapse_doctor_mobile/api/questionnaire.dart';
-import 'package:prolapse_doctor_mobile/utils/util.dart';
 
 class QuestionData {
   static final QuestionData _instance = QuestionData._internal();
@@ -11,7 +10,6 @@ class QuestionData {
 
   late int purposeId;
   late String questionnaireIds;
-  late BuildContext _context;
   late String lang;
   int firstMeetingId = 0;
   List<dynamic> questionnaires = [];
@@ -29,50 +27,37 @@ class QuestionData {
   }
 
   void setContext(BuildContext context) {
-    _context = context;
     lang = Localizations.localeOf(context).languageCode;
   }
 
   Future<List<dynamic>> fetchQuestionnaires() async {
-    try {
-      List<dynamic> result =
-          await getQuestionnaireByIDs(questionnaireIds, lang);
-      for (var element in result) {
-        int id = element['ID'];
-        element['questions'] = await fetchQuestions(id);
-        element['children'] = await fetchChildren(id);
-        questionnaires.add(element);
-      }
-      return questionnaires;
-    } catch (e) {
-      showToast(_context, e.toString().replaceFirst('Exception: ', ''));
-      return [];
+    final result = await getQuestionnaireByIDs(questionnaireIds, lang);
+    final loaded = <dynamic>[];
+    for (final element in result) {
+      final id = element['ID'] as int;
+      element['questions'] = await fetchQuestions(id);
+      element['children'] = await fetchChildren(id);
+      loaded.add(element);
     }
+    if (loaded.isNotEmpty &&
+        !loaded.any((questionnaire) =>
+            (questionnaire['questions'] as List).isNotEmpty ||
+            (questionnaire['children'] as List)
+                .any((child) => (child['questions'] as List).isNotEmpty))) {
+      throw StateError('No questions are configured for this visit.');
+    }
+    // Publish only a complete load so retries cannot duplicate or omit answers.
+    questionnaires = loaded;
+    return questionnaires;
   }
 
-  Future<List<dynamic>> fetchQuestions(int id) async {
-    try {
-      List<dynamic> result = await getQuestion(id, lang);
-      return result;
-    } catch (e) {
-      showToast(_context, e.toString().replaceFirst('Exception: ', ''));
-      return [];
-    }
-  }
+  Future<List<dynamic>> fetchQuestions(int id) => getQuestion(id, lang);
 
   Future<List<dynamic>> fetchChildren(int id) async {
-    try {
-      List<dynamic> result = await getQuestionnaire(id, lang);
-      if (result.isNotEmpty) {
-        for (var element in result) {
-          int id = element['ID'];
-          element['questions'] = await fetchQuestions(id);
-        }
-      }
-      return result;
-    } catch (e) {
-      showToast(_context, e.toString().replaceFirst('Exception: ', ''));
-      return [];
+    final result = await getQuestionnaire(id, lang);
+    for (final element in result) {
+      element['questions'] = await fetchQuestions(element['ID'] as int);
     }
+    return result;
   }
 }
