@@ -2,35 +2,37 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String _baseUrl = 'https://cs1.ucc.ie/yanlin/prolapse';
-// const String _baseUrl = '127.0.0.1:8080';
+const String apiBaseUrl = String.fromEnvironment(
+  'API_BASE_URL',
+  defaultValue: 'https://mygynae-api-588193010382.europe-west1.run.app',
+);
 
 Future<Map<String, dynamic>> get(String path) async {
-  final response = await http.get(Uri.parse('$_baseUrl$path'),
+  final response = await http.get(Uri.parse('$apiBaseUrl$path'),
       headers: await _getAuthHeaders());
   return _handleResponse(response);
 }
 
 Future<List<dynamic>> getList(String path) async {
-  final response = await http.get(Uri.parse('$_baseUrl$path'),
+  final response = await http.get(Uri.parse('$apiBaseUrl$path'),
       headers: await _getAuthHeaders());
   return _handleResponseList(response);
 }
 
 Future<Map<String, dynamic>> post(String path, {Object? body}) async {
-  final response = await http.post(Uri.parse('$_baseUrl$path'),
+  final response = await http.post(Uri.parse('$apiBaseUrl$path'),
       headers: await _getAuthHeaders(), body: body);
   return _handleResponse(response);
 }
 
 Future<Map<String, dynamic>> put(String path, {Object? body}) async {
-  final response = await http.put(Uri.parse('$_baseUrl$path'),
+  final response = await http.put(Uri.parse('$apiBaseUrl$path'),
       headers: await _getAuthHeaders(), body: body);
   return _handleResponse(response);
 }
 
 Future<Map<String, dynamic>> delete(String path) async {
-  final response = await http.delete(Uri.parse('$_baseUrl$path'),
+  final response = await http.delete(Uri.parse('$apiBaseUrl$path'),
       headers: await _getAuthHeaders());
   return _handleResponse(response);
 }
